@@ -61,7 +61,7 @@ function SetupCanvas() {
   canvas.width = 936;
   canvas.height = 956;
 
-  ctx.scale(2, 2);
+  ctx.scale(1.4, 1.4);
 
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -92,14 +92,18 @@ function DrawTetromino() {
 function HandleKeyPress(key) {
   if (key.keyCode === 65) {
     direction = DIRECTION.LEFT;
-    DeleteTetromino();
-    startX--;
-    DrawTetromino();
+    if (!HittingTheWall()) {
+      DeleteTetromino();
+      startX--;
+      DrawTetromino();
+    }
   } else if (key.keyCode === 68) {
     direction = DIRECTION.RIGHT;
-    DeleteTetromino();
-    startX++;
-    DrawTetromino();
+    if (!HittingTheWall()) {
+      DeleteTetromino();
+      startX++;
+      DrawTetromino();
+    }
   } else if (key.keyCode === 83) {
     direction = DIRECTION.DOWN;
     DeleteTetromino();
@@ -141,4 +145,16 @@ function CreateTetromino() {
   let randomTetromino = Math.floor(Math.random() * tetrominos.length);
   curTetromino = tetrominos[randomTetromino];
   curTetrominoColor = tetrominoColors[randomTetromino];
+}
+
+function HittingTheWall() {
+  for (let i = 0; i < curTetromino.length; i++) {
+    let newX = curTetromino[i][0] + startX;
+    if (newX <= 0 && direction === DIRECTION.LEFT) {
+      return true;
+    } else if (newX >= 11 && direction === DIRECTION.RIGHT) {
+      return true;
+    }
+  }
+  return false;
 }
