@@ -129,22 +129,30 @@ function DrawTetromino() {
 }
 
 function HandleKeyPress(key) {
-  if (key.keyCode === 65) {
-    direction = DIRECTION.LEFT;
-    if (!HittingTheWall()) {
-      DeleteTetromino();
-      startX--;
-      DrawTetromino();
+  if (winOrLose != "Game Over") {
+    if (key.keyCode === 65) {
+      direction = DIRECTION.LEFT;
+      if (!HittingTheWall()) {
+        DeleteTetromino();
+        startX--;
+        DrawTetromino();
+      }
+    } else if (key.keyCode === 68) {
+      direction = DIRECTION.RIGHT;
+      if (!HittingTheWall()) {
+        DeleteTetromino();
+        startX++;
+        DrawTetromino();
+      }
+    } else if (key.keyCode === 83) {
+      MoveTetrominoDown();
     }
-  } else if (key.keyCode === 68) {
-    direction = DIRECTION.RIGHT;
-    if (!HittingTheWall()) {
-      DeleteTetromino();
-      startX++;
-      DrawTetromino();
-    }
-  } else if (key.keyCode === 83) {
-    direction = DIRECTION.DOWN;
+  }
+}
+
+function MoveTetrominoDown() {
+  direction = DIRECTION.DOWN;
+  if (!CheckForVerticalCollision()) {
     DeleteTetromino();
     startY++;
     DrawTetromino();
